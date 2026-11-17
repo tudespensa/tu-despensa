@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>Tu Despensa — Suscripciones digitales con entrega rápida</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Archivo+Expanded:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f6f3; --surface:#ffffff; --surface2:#eaf0ea; --ink:#14231a; --muted:#5a6b5f;
+    --line:#d7e0d7; --brand:#0e6b3a; --brand-ink:#ffffff; --accent:#e8a020; --accent-ink:#231a00;
+    --warn-bg:#fdf3e0; --warn-line:#e8c87a; --warn-ink:#6b4e00;
+    --ok:#0e6b3a; --radius:14px;
+    --font:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0d1510; --surface:#16211a; --surface2:#1c2a20; --ink:#e8f0e9; --muted:#9db3a4;
+      --line:#2b3d30; --brand:#2fa35e; --brand-ink:#08130c; --accent:#f0b63a; --accent-ink:#231a00;
+      --warn-bg:#2a2110; --warn-line:#6b5518; --warn-ink:#f0d48a;
+      --ok:#4cc47c;
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.55;-webkit-font-smoothing:antialiased}
+  button,[role="button"],select,summary,input:not([type="checkbox"],[type="radio"]){min-height:2.25rem}
+  a{color:var(--brand)}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+  /* status bar */
+  .statusbar{background:var(--ink);color:var(--bg);font-size:.85rem}
+  .statusbar .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;padding-top:9px;padding-bottom:9px}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);display:inline-block;margin-right:7px;vertical-align:1px}
+  .statusbar b{font-weight:700}
+  .sb-right{margin-left:auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .sb-right .prov-note{font-family:var(--mono);font-size:.78rem;opacity:.85}
+  .lang-switch{display:inline-flex;border:1.5px solid var(--bg);border-radius:999px;overflow:hidden}
+  .lang-switch button{background:transparent;border:0;color:var(--bg);font-family:var(--mono);font-size:.78rem;font-weight:600;padding:4px 13px;cursor:pointer;min-height:2rem}
+  .lang-switch button[aria-pressed="true"]{background:var(--bg);color:var(--ink)}
+  /* hero */
+  header.hero{padding:44px 0 8px}
+  .hero h1{font-size:clamp(2rem,6vw,3.4rem);line-height:1.04;margin:0 0 14px;font-weight:800;letter-spacing:-.02em;max-width:16ch}
+  .hero h1 em{font-style:normal;color:var(--brand)}
+  .hero p.lede{font-size:clamp(1.02rem,2.4vw,1.2rem);color:var(--muted);max-width:62ch;margin:0 0 22px}
+  .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:10px}
+  .btn{display:inline-flex;align-items:center;gap:9px;padding:11px 20px;border-radius:10px;font-weight:700;font-size:.98rem;text-decoration:none;border:1.5px solid var(--brand);cursor:pointer;font-family:var(--font);background:transparent}
+  .btn.primary{background:var(--brand);color:var(--brand-ink)}
+  .btn.ghost{background:transparent;color:var(--brand)}
+  .btn.small{padding:8px 14px;font-size:.9rem}
+  .btn.tg{justify-content:center;text-align:center}
+  .hero-facts{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0 6px}
+  .fact{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.9rem}
+  .fact b{display:block;font-size:1.05rem}
+  .fact span{color:var(--muted);font-size:.82rem}
+  /* sections */
+  section{padding:38px 0 6px}
+  h2{font-size:clamp(1.4rem,3.4vw,1.9rem);margin:0 0 8px;font-weight:800;letter-spacing:-.015em}
+  .sub{color:var(--muted);max-width:68ch;margin:0 0 22px}
+  /* buy options */
+  .buy-grid{display:grid;grid-template-columns:1fr;gap:14px}
+  @media(min-width:860px){.buy-grid{grid-template-columns:1fr 1fr}}
+  .option{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:12px}
+  .option.main{border:1.5px solid var(--brand)}
+  .opt-tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.09em;text-transform:uppercase;color:var(--brand);font-weight:600}
+  .option h3{margin:0;font-size:1.2rem}
+  .option p{margin:0;color:var(--muted);font-size:.94rem}
+  .wallet{border:1px solid var(--line);border-radius:10px;padding:14px;background:var(--bg)}
+  .wallet .wname{display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:800;margin-bottom:8px}
+  .net-badge{font-family:var(--mono);font-size:.72rem;background:var(--surface2);border-radius:999px;padding:3px 9px;color:var(--brand);font-weight:600;white-space:nowrap}
+  .addr{font-family:var(--mono);font-size:.85rem;overflow-wrap:anywhere;background:var(--surface2);border-radius:8px;padding:10px 12px;margin-bottom:10px}
+  .osteps{margin:0;padding-left:20px;color:var(--muted);font-size:.94rem;display:grid;gap:5px}
+  .osteps a{font-weight:600}
+  .opt-warn{font-size:.88rem!important;background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink)!important;border-radius:10px;padding:11px 13px}
+  .bot-own{border:1.5px dashed var(--brand);border-radius:10px;padding:14px 16px;background:var(--surface2);display:grid;gap:8px}
+  .bot-own h4{margin:0;font-size:1rem}
+  .bot-own p{font-size:.9rem}
+  .bot-own .osteps{font-size:.9rem}
+  /* flow */
+  .flow{display:grid;grid-template-columns:1fr;gap:12px}
+  @media(min-width:760px){.flow{grid-template-columns:repeat(4,1fr)}}
+  .step{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+  .step .n{font-family:var(--mono);font-size:.8rem;color:var(--brand);font-weight:600;letter-spacing:.08em}
+  .step h3{margin:6px 0 6px;font-size:1.02rem}
+  .step p{margin:0;color:var(--muted);font-size:.92rem}
+  .step code{font-family:var(--mono);font-size:.8rem;background:var(--surface2);padding:1px 6px;border-radius:5px;color:var(--ink)}
+  /* catalog */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+  .chip{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:8px 16px;font-weight:600;font-size:.9rem;cursor:pointer;font-family:var(--font)}
+  .chip[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+  .grid{display:grid;grid-template-columns:1fr;gap:12px}
+  @media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
+  @media(min-width:960px){.grid{grid-template-columns:1fr 1fr 1fr}}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:flex;flex-direction:column;gap:8px}
+  .card .cat{font-family:var(--mono);font-size:.74rem;letter-spacing:.09em;text-transform:uppercase;color:var(--brand);font-weight:600}
+  .card h3{margin:0;font-size:1.08rem}
+  .card p{margin:0;color:var(--muted);font-size:.92rem;flex:1}
+  .card .prov{font-size:.82rem;color:var(--muted)}
+  .card .prov b{color:var(--ink)}
+  .price-note{font-size:.82rem;border-top:1px dashed var(--line);padding-top:9px;color:var(--muted)}
+  .price-note b{color:var(--accent);font-weight:700}
+  .price-row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;border-top:1px dashed var(--line);padding-top:10px}
+  .price-row .usd{font-size:1.3rem;font-weight:800;letter-spacing:-.01em}
+  .price-row .usd small{font-size:.78rem;font-weight:600;color:var(--muted)}
+  .price-row .cup{font-family:var(--mono);font-size:.85rem;color:var(--muted)}
+  .order-link{font-weight:700;font-size:.92rem;text-decoration:none}
+  .order-link:hover{text-decoration:underline}
+  .hidden{display:none!important}
+  /* providers table */
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
+  table{border-collapse:collapse;width:100%;min-width:560px;font-size:.93rem}
+  th,td{padding:12px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+  thead th{background:var(--surface2);font-size:.85rem;letter-spacing:.02em}
+  tbody tr:last-child td{border-bottom:none}
+  td.rowhead{font-weight:700;white-space:nowrap}
+  .verdict{display:flex;gap:12px;align-items:flex-start;background:var(--surface2);border-radius:var(--radius);padding:16px 18px;margin-top:16px}
+  .verdict p{margin:0}
+  /* api panel */
+  .api-panel{background:var(--surface);border:1.5px solid var(--brand);border-radius:var(--radius);padding:22px}
+  .api-panel h3{margin:0 0 4px;font-size:1.15rem}
+  .api-steps{display:grid;gap:10px;margin:16px 0}
+  .api-step{display:flex;gap:14px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:var(--bg)}
+  .api-step .badge{flex:none;width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:.95rem}
+  .api-step h4{margin:0 0 3px;font-size:1rem}
+  .api-step p{margin:0;color:var(--muted);font-size:.92rem}
+  .api-step a{font-weight:600}
+  .endpoints{font-family:var(--mono);font-size:.83rem;background:var(--ink);color:#cfe8d4;border-radius:10px;padding:16px 18px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7}
+  /* En móvil la tabla comparativa se apila en vez de desplazar de lado */
+  @media(max-width:640px){
+    .tablewrap{overflow-x:visible}
+    table{min-width:0}
+    table,thead,tbody,tr,td{display:block;width:100%}
+    thead{display:none}
+    tbody tr{border-bottom:2px solid var(--line);padding:8px 0}
+    tbody tr:last-child{border-bottom:none}
+    td{border-bottom:none;padding:7px 14px}
+    td.rowhead{padding-bottom:0;font-size:.95rem}
+    td[data-p]::before{content:attr(data-p);display:block;font-weight:700;font-size:.82rem;color:var(--brand);margin-bottom:2px}
+  }
+  .endpoints .m{color:var(--accent)}
+  .warn{background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink);border-radius:var(--radius);padding:16px 18px;margin-top:16px}
+  .warn p{margin:0}
+  .warn b{font-weight:800}
+  /* calculator */
+  .calc{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+  .calc-grid{display:grid;gap:18px}
+  @media(min-width:760px){.calc-grid{grid-template-columns:1fr 1fr}}
+  label.flabel{display:block;font-weight:700;font-size:.9rem;margin-bottom:6px}
+  input[type="number"],input[type="text"]{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:1rem}
+  input[type="range"]{width:100%;accent-color:var(--brand)}
+  .calc-out{display:grid;gap:10px}
+  .out-box{background:var(--surface2);border-radius:10px;padding:14px 16px}
+  .out-box .k{font-size:.82rem;color:var(--muted);font-weight:600}
+  .out-box .v{font-size:1.5rem;font-weight:800;letter-spacing:-.01em}
+  .out-box .v small{font-size:.9rem;font-weight:600;color:var(--muted)}
+  .hint{font-size:.85rem;color:var(--muted);margin-top:6px}
+  /* faq */
+  details{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:6px 16px;margin-bottom:10px}
+  summary{font-weight:700;cursor:pointer;padding:10px 0}
+  details p{color:var(--muted);margin:0 0 14px}
+  /* billetera (muy pronto) */
+  .wallet-soon{background:var(--surface);border:1.5px dashed var(--brand);border-radius:var(--radius);padding:22px;display:grid;gap:12px;justify-items:start}
+  .wallet-soon p{margin:0;color:var(--muted)}
+  .soon-badge{font-family:var(--mono);font-size:.74rem;letter-spacing:.09em;text-transform:uppercase;color:var(--brand);font-weight:600;background:var(--surface2);border-radius:999px;padding:4px 11px}
+  /* botón flotante de WhatsApp */
+  .wa-float{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:60;display:inline-flex;align-items:center;gap:9px;background:var(--brand);color:var(--brand-ink);font-weight:800;font-size:.95rem;text-decoration:none;padding:12px 19px;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.28)}
+  .wa-float svg{flex:none}
+  .option{box-shadow:0 1px 3px rgba(20,35,26,.06)}
+  /* footer */
+  footer{margin-top:44px;border-top:1px solid var(--line);padding:26px 0 40px;color:var(--muted);font-size:.88rem}
+  footer .cols{display:grid;gap:18px}
+  @media(min-width:760px){footer .cols{grid-template-columns:1.4fr 1fr 1fr}}
+  footer h4{color:var(--ink);margin:0 0 8px;font-size:.95rem}
+  footer ul{margin:0;padding:0;list-style:none}
+  footer li{margin-bottom:5px}
+  footer a{word-break:break-all}
+  .src{font-size:.8rem;margin-top:18px}
+</style>
+</head>
+<body>
+
+<div class="statusbar">
+  <div class="wrap">
+    <span data-i18n="sb_status"><span class="dot"></span><b>Tienda abierta:</b> entrega rápida en cuanto se confirma tu pago</span>
+    <span class="sb-right">
+      <span class="prov-note" data-i18n="sb_right">Pedidos por WhatsApp: +53 53933247</span>
+      <span class="lang-switch" role="group" aria-label="Idioma / Language">
+        <button type="button" id="langEs" aria-pressed="true">ES</button>
+        <button type="button" id="langEn" aria-pressed="false">EN</button>
+      </span>
+    </span>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <h1 data-i18n="hero_h1">Tu Despensa: suscripciones digitales con <em>entrega rápida</em></h1>
+    <p class="lede" data-i18n="hero_lede">Cuentas y suscripciones de IA, diseño, streaming, música y más, cada una con su descripción clara para que sepas qué compras antes de pagar. Pides por WhatsApp, depositas en USDT y recibes tu producto en el mismo chat.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="#catalogo" data-i18n="cta_catalog">Ver el catálogo</a>
+      <a class="btn ghost" href="#comprar" data-i18n="cta_buy">Cómo comprar</a>
+      <a class="btn ghost" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20hacer%20un%20pedido%20en%20Tu%20Despensa" target="_blank" rel="noopener" data-i18n="cta_tg">Pedir por WhatsApp</a>
+    </div>
+    <div class="hero-facts">
+      <div class="fact" data-i18n="fact1"><b>64 productos</b><span>Con precio en USDT y CUP</span></div>
+      <div class="fact" data-i18n="fact2"><b>USDT · BEP20</b><span>Deposita en SafePal o Cwallet</span></div>
+      <div class="fact" data-i18n="fact3"><b>Entrega rápida</b><span>En cuanto se confirma tu depósito</span></div>
+      <div class="fact" data-i18n="fact4"><b>WhatsApp directo</b><span>Atención personal de la tienda</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="comprar">
+    <h2 data-i18n="buy_h2">Dos formas de comprar, claras</h2>
+    <p class="sub" data-i18n="buy_sub">Elige la que te quede mejor: depositas USDT desde tu billetera o pides directo por WhatsApp. En los dos casos la entrega se activa en cuanto se confirma el pago.</p>
+    <div class="buy-grid">
+      <div class="option main">
+        <span class="opt-tag" data-i18n="opt1_tag">Opción 1 · Depósito directo</span>
+        <h3 data-i18n="opt1_h3">Deposita USDT por BEP20</h3>
+        <p data-i18n="opt1_p">Envía USDT por la red BEP20 (BNB Smart Chain) a una de estas dos direcciones de la tienda:</p>
+        <div class="wallet">
+          <div class="wname"><span>SafePal</span><span class="net-badge">USDT · BEP20</span></div>
+          <div class="addr">0x72Ee72708403F5848d2b39Fe0849ea04aFfF6Fb2</div>
+          <button type="button" class="btn ghost small copy-btn" data-addr="0x72Ee72708403F5848d2b39Fe0849ea04aFfF6Fb2">Copiar dirección</button>
+        </div>
+        <div class="wallet">
+          <div class="wname"><span>Cwallet</span><span class="net-badge">USDT · BEP20</span></div>
+          <div class="addr">0x1Aa0C54695980a0AaE0A53677d34f71261fa38a3</div>
+          <button type="button" class="btn ghost small copy-btn" data-addr="0x1Aa0C54695980a0AaE0A53677d34f71261fa38a3">Copiar dirección</button>
+        </div>
+        <ol class="osteps">
+          <li data-i18n="opt1_s1">Copia la dirección de la billetera que prefieras.</li>
+          <li data-i18n="opt1_s2">Envía el monto exacto en USDT usando la red BEP20 y guarda el hash de la transacción.</li>
+          <li data-i18n="opt1_s3">Pasa el comprobante por <a href="https://wa.me/5353933247?text=Hola%2C%20acabo%20de%20depositar%20USDT%20por%20BEP20%2C%20te%20paso%20el%20comprobante" target="_blank" rel="noopener">WhatsApp</a> y recibes tu producto.</li>
+        </ol>
+        <p class="opt-warn" data-i18n="opt1_warn"><b>Ojo:</b> envía solo USDT por la red BEP20. Un depósito por otra red (TRC20, ERC20…) puede no llegar nunca y no se puede recuperar.</p>
+      </div>
+      <div class="option main">
+        <span class="opt-tag" data-i18n="opt2_tag">Opción 2 · WhatsApp</span>
+        <h3 data-i18n="opt2_h3">Pide por WhatsApp</h3>
+        <p data-i18n="opt2_p">La forma más rápida: escríbenos directo al WhatsApp de la tienda, dinos qué producto quieres y te confirmamos precio y disponibilidad al momento.</p>
+        <a class="btn primary tg" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20hacer%20un%20pedido%20en%20Tu%20Despensa" target="_blank" rel="noopener" data-i18n="tg_b1">Abrir WhatsApp — +53 53933247</a>
+        <ol class="osteps">
+          <li data-i18n="opt2_s1">Toca el botón y se abre el chat con la tienda, con el mensaje listo para enviar.</li>
+          <li data-i18n="opt2_s2">Di qué producto quieres y te confirmamos el precio final.</li>
+          <li data-i18n="opt2_s3">Pagas por depósito USDT (BEP20) a SafePal o Cwallet y recibes tu producto por el mismo chat.</li>
+        </ol>
+        <p data-i18n="opt2_note">Atención personal de la tienda, sin intermediarios: hablas directo con Tu Despensa de principio a fin.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="como-funciona">
+    <h2 data-i18n="flow_h2">Cómo funciona tu compra</h2>
+    <p class="sub" data-i18n="flow_sub">Cuatro pasos y listo: eliges el servicio, pagas tu depósito y recibes tu producto por WhatsApp.</p>
+    <div class="flow">
+      <div class="step"><span class="n" data-i18n="st1_n">PASO 1</span><h3 data-i18n="st1_h">Elige tu servicio</h3><p data-i18n="st1_p">Revisa el catálogo y lee la descripción de cada servicio para saber exactamente qué vas a comprar.</p></div>
+      <div class="step"><span class="n" data-i18n="st2_n">PASO 2</span><h3 data-i18n="st2_h">Haz tu depósito</h3><p data-i18n="st2_p">Deposita el monto en USDT por la red BEP20 a la dirección de SafePal o Cwallet, o coordina el pago por WhatsApp.</p></div>
+      <div class="step"><span class="n" data-i18n="st3_n">PASO 3</span><h3 data-i18n="st3_h">Envía el comprobante</h3><p data-i18n="st3_p">Pásanos el comprobante por WhatsApp junto con el nombre del servicio que pediste.</p></div>
+      <div class="step"><span class="n" data-i18n="st4_n">PASO 4</span><h3 data-i18n="st4_h">Recibe tu producto</h3><p data-i18n="st4_p">Te entregamos tu cuenta o suscripción por el mismo chat, con los datos de acceso listos para usar.</p></div>
+    </div>
+  </section>
+
+  <section id="catalogo">
+    <h2 data-i18n="cat_h2">Servicios actualizados</h2>
+    <p class="sub" data-i18n="cat_sub">Los 64 productos del lanzamiento, cada uno con su descripción y su precio en USDT y en CUP. Pides por WhatsApp, confirmamos el stock en el momento y depositas solo cuando te lo confirmemos.</p>
+    <div class="filters" role="group" aria-label="Filtrar categorías">
+      <button class="chip" data-filter="all" aria-pressed="true" data-i18n="chip_all">Todo</button>
+      <button class="chip" data-filter="ia" aria-pressed="false" data-i18n="k_ia">IA y chatbots</button>
+      <button class="chip" data-filter="diseno" aria-pressed="false" data-i18n="k_diseno">Diseño y video</button>
+      <button class="chip" data-filter="streaming" aria-pressed="false" data-i18n="k_streaming">Streaming y música</button>
+      <button class="chip" data-filter="prod" aria-pressed="false" data-i18n="k_prod">Productividad</button>
+      <button class="chip" data-filter="dev" aria-pressed="false" data-i18n="k_dev">Desarrollo y SEO</button>
+      <button class="chip" data-filter="otros" aria-pressed="false" data-i18n="k_otros">VPN, claves y más</button>
+    </div>
+    <div class="grid" id="catalogGrid">
+      <article class="card" data-cat="otros"><span class="cat" data-i18n="k_otros">VPN, claves y más</span><h3>Hotmail Mail Trusted</h3><p>Cuenta de correo Hotmail lista para usar, ideal para registros y trabajo diario.</p><div class="price-row"><span class="usd">$0.06 <small>USDT</small></span><span class="cup">≈ 50 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Hotmail%20Mail%20Trusted%20%28%240.06%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="otros"><span class="cat" data-i18n="k_otros">VPN, claves y más</span><h3>Outlook Mail Trusted</h3><p>Cuenta de correo Outlook lista para usar, para tus registros y comunicaciones.</p><div class="price-row"><span class="usd">$0.06 <small>USDT</small></span><span class="cup">≈ 50 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Outlook%20Mail%20Trusted%20%28%240.06%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="diseno"><span class="cat" data-i18n="k_diseno">Diseño y video</span><h3>Adobe Express Premium 12M Coupons</h3><p>Cupones de Adobe Express Premium por 12 meses: diseño rápido con plantillas y recursos premium.</p><div class="price-row"><span class="usd">$0.58 <small>USDT</small></span><span class="cup">≈ 700 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Adobe%20Express%20Premium%2012M%20Coupons%20%28%240.58%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="diseno"><span class="cat" data-i18n="k_diseno">Diseño y video</span><h3>Adobe Express 4 Months Trial</h3><p>Prueba de Adobe Express por 4 meses para crear diseños, flyers y contenido para redes.</p><div class="price-row"><span class="usd">$0.66 <small>USDT</small></span><span class="cup">≈ 800 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Adobe%20Express%204%20Months%20Trial%20%28%240.66%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="prod"><span class="cat" data-i18n="k_prod">Productividad</span><h3>LinkedIn Premium Career - 3 Months (Link)</h3><p>LinkedIn Premium Career por 3 meses: busca empleo, mira quién ve tu perfil y contacta reclutadores.</p><div class="price-row"><span class="usd">$0.70 <small>USDT</small></span><span class="cup">≈ 850 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20LinkedIn%20Premium%20Career%20-%203%20Months%20%28Link%29%20%28%240.70%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="streaming"><span class="cat" data-i18n="k_streaming">Streaming y música</span><h3>Apple Music - 5 Months (Link)</h3><p>Apple Music por 5 meses (enlace): música sin anuncios en todos tus dispositivos.</p><div class="price-row"><span class="usd">$0.70 <small>USDT</small></span><span class="cup">≈ 850 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Apple%20Music%20-%205%20Months%20%28Link%29%20%28%240.70%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="streaming"><span class="cat" data-i18n="k_streaming">Streaming y música</span><h3>Crunchyroll Premium - 1 Month (Link)</h3><p>Crunchyroll Premium por 1 mes (enlace): anime sin anuncios y estrenos al momento.</p><div class="price-row"><span class="usd">$0.70 <small>USDT</small></span><span class="cup">≈ 850 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Crunchyroll%20Premium%20-%201%20Month%20%28Link%29%20%28%240.70%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="prod"><span class="cat" data-i18n="k_prod">Productividad</span><h3>Duolingo Super - 12 Months (Link)</h3><p>Duolingo Super por 12 meses (enlace): aprende idiomas sin anuncios y sin límite de corazones.</p><div class="price-row"><span class="usd">$0.70 <small>USDT</small></span><span class="cup">≈ 850 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Duolingo%20Super%20-%2012%20Months%20%28Link%29%20%28%240.70%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="diseno"><span class="cat" data-i18n="k_diseno">Diseño y video</span><h3>Adobe Express Premium - 12 Months (Link)</h3><p>Adobe Express Premium por 12 meses (enlace): plantillas, fuentes y herramientas premium de diseño.</p><div class="price-row"><span class="usd">$0.78 <small>USDT</small></span><span class="cup">≈ 950 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Adobe%20Express%20Premium%20-%2012%20Months%20%28Link%29%20%28%240.78%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="prod"><span class="cat" data-i18n="k_prod">Productividad</span><h3>Duolingo Super 12m NW</h3><p>Duolingo Super por 12 meses: lecciones sin anuncios y práctica personalizada.</p><div class="price-row"><span class="usd">$1.12 <small>USDT</small></span><span class="cup">≈ 1.350 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Duolingo%20Super%2012m%20NW%20%28%241.12%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="prod"><span class="cat" data-i18n="k_prod">Productividad</span><h3>Notion Business 3m NW</h3><p>Notion Business por 3 meses: notas, proyectos y documentos de tu equipo en un solo lugar.</p><div class="price-row"><span class="usd">$1.50 <small>USDT</small></span><span class="cup">≈ 1.800 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Notion%20Business%203m%20NW%20%28%241.50%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="ia"><span class="cat" data-i18n="k_ia">IA y chatbots</span><h3>Gemini Plus 6 Months [No Card]</h3><p>Gemini Plus por 6 meses, sin tarjeta: la IA de Google para escribir, resumir y crear.</p><div class="price-row"><span class="usd">$1.60 <small>USDT</small></span><span class="cup">≈ 1.900 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Gemini%20Plus%206%20Months%20%5BNo%20Card%5D%20%28%241.60%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="prod"><span class="cat" data-i18n="k_prod">Productividad</span><h3>iLovePdf Premium 1 Yr</h3><p>iLovePDF Premium por 1 año: convierte, une, divide y firma PDF sin límites.</p><div class="price-row"><span class="usd">$2.08 <small>USDT</small></span><span class="cup">≈ 2.500 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20iLovePdf%20Premium%201%20Yr%20%28%242.08%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="prod"><span class="cat" data-i18n="k_prod">Productividad</span><h3>Udemy Personal Plan 1M</h3><p>Plan Personal de Udemy por 1 mes: miles de cursos en línea para aprender a tu ritmo.</p><div class="price-row"><span class="usd">$2.34 <small>USDT</small></span><span class="cup">≈ 2.800 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Udemy%20Personal%20Plan%201M%20%28%242.34%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="ia"><span class="cat" data-i18n="k_ia">IA y chatbots</span><h3>Gemini AI Pro 18m</h3><p>Gemini AI Pro por 18 meses: Gemini avanzado para escribir, programar y trabajar con documentos.</p><div class="price-row"><span class="usd">$2.50 <small>USDT</small></span><span class="cup">≈ 3.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Gemini%20AI%20Pro%2018m%20%28%242.50%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="streaming"><span class="cat" data-i18n="k_streaming">Streaming y música</span><h3>Amazon Prime Video 6 Months</h3><p>Prime Video por 6 meses: películas y series en streaming de Amazon.</p><div class="price-row"><span class="usd">$2.96 <small>USDT</small></span><span class="cup">≈ 3.550 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Amazon%20Prime%20Video%206%20Months%20%28%242.96%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="ia"><span class="cat" data-i18n="k_ia">IA y chatbots</span><h3>ElevenReader Ultra 12 Months</h3><p>ElevenReader Ultra por 12 meses: escucha libros, artículos y PDF con voces de IA naturales.</p><div class="price-row"><span class="usd">$3.00 <small>USDT</small></span><span class="cup">≈ 3.600 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20ElevenReader%20Ultra%2012%20Months%20%28%243.00%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="ia"><span class="cat" data-i18n="k_ia">IA y chatbots</span><h3>MUSE AI 31B TOKEN (NW)</h3><p>Crédito de tokens de Muse AI para generar contenido con IA.</p><div class="price-row"><span class="usd">$3.68 <small>USDT</small></span><span class="cup">≈ 4.400 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20MUSE%20AI%2031B%20TOKEN%20%28NW%29%20%28%243.68%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="otros"><span class="cat" data-i18n="k_otros">VPN, claves y más</span><h3>Nord VPN 3m NW</h3><p>NordVPN por 3 meses: navega con privacidad y conexión segura.</p><div class="price-row"><span class="usd">$3.75 <small>USDT</small></span><span class="cup">≈ 4.500 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Nord%20VPN%203m%20NW%20%28%243.75%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="prod"><span class="cat" data-i18n="k_prod">Productividad</span><h3>Coursera Premium 12 Months</h3><p>Coursera Premium por 12 meses: cursos y certificados de universidades y empresas.</p><div class="price-row"><span class="usd">$4.50 <small>USDT</small></span><span class="cup">≈ 5.400 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Coursera%20Premium%2012%20Months%20%28%244.50%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="prod"><span class="cat" data-i18n="k_prod">Productividad</span><h3>Miro Pro - 3M</h3><p>Miro Pro por 3 meses: pizarras colaborativas en línea para equipos y proyectos.</p><div class="price-row"><span class="usd">$4.50 <small>USDT</small></span><span class="cup">≈ 5.400 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Miro%20Pro%20-%203M%20%28%244.50%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="ia"><span class="cat" data-i18n="k_ia">IA y chatbots</span><h3>Lovable Lite 75 Credit 12M</h3><p>Lovable Lite con 75 créditos por 12 meses: crea apps y webs describiendo lo que quieres.</p><div class="price-row"><span class="usd">$4.65 <small>USDT</small></span><span class="cup">≈ 5.600 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Lovable%20Lite%2075%20Credit%2012M%20%28%244.65%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="diseno"><span class="cat" data-i18n="k_diseno">Diseño y video</span><h3>Figma Pro Edu 2 Yr</h3><p>Figma Pro educativo por 2 años: diseño de interfaces y prototipos en equipo.</p><div class="price-row"><span class="usd">$4.88 <small>USDT</small></span><span class="cup">≈ 5.850 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Figma%20Pro%20Edu%202%20Yr%20%28%244.88%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="ia"><span class="cat" data-i18n="k_ia">IA y chatbots</span><h3>Lovable PRO 1M 105 Credit</h3><p>Lovable Pro por 1 mes con 105 créditos: crea aplicaciones web con IA.</p><div class="price-row"><span class="usd">$5.10 <small>USDT</small></span><span class="cup">≈ 6.100 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Lovable%20PRO%201M%20105%20Credit%20%28%245.10%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="diseno"><span class="cat" data-i18n="k_diseno">Diseño y video</span><h3>Supercut Pro 10 Seat 12m NW</h3><p>Supercut Pro para 10 puestos por 12 meses: edición y recorte de video con IA.</p><div class="price-row"><span class="usd">$5.85 <small>USDT</small></span><span class="cup">≈ 7.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Supercut%20Pro%2010%20Seat%2012m%20NW%20%28%245.85%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="prod"><span class="cat" data-i18n="k_prod">Productividad</span><h3>Granola Business NW - opción 1</h3><p>Granola Business: notas de reuniones con IA que transcribe y resume tus llamadas.</p><div class="price-row"><span class="usd">$6.00 <small>USDT</small></span><span class="cup">≈ 7.200 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Granola%20Business%20NW%20-%20opci%C3%B3n%201%20%28%246.00%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="diseno"><span class="cat" data-i18n="k_diseno">Diseño y video</span><h3>Picsart Pro 6 Months</h3><p>Picsart Pro por 6 meses: editor de fotos y video con efectos y herramientas premium.</p><div class="price-row"><span class="usd">$6.35 <small>USDT</small></span><span class="cup">≈ 7.600 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Picsart%20Pro%206%20Months%20%28%246.35%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="otros"><span class="cat" data-i18n="k_otros">VPN, claves y más</span><h3>Surfshark VPN 2M Private Accounts</h3><p>Surfshark VPN por 2 meses, cuenta privada: navegación segura y sin límite de dispositivos.</p><div class="price-row"><span class="usd">$6.81 <small>USDT</small></span><span class="cup">≈ 8.150 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Surfshark%20VPN%202M%20Private%20Accounts%20%28%246.81%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="ia"><span class="cat" data-i18n="k_ia">IA y chatbots</span><h3>Lovable Lite 305 Credit 12M</h3><p>Lovable Lite con 305 créditos por 12 meses: más capacidad para crear apps y webs con IA.</p><div class="price-row"><span class="usd">$8.25 <small>USDT</small></span><span class="cup">≈ 9.900 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Lovable%20Lite%20305%20Credit%2012M%20%28%248.25%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="diseno"><span class="cat" data-i18n="k_diseno">Diseño y video</span><h3>Framer Pro 12m NW</h3><p>Framer Pro por 12 meses: crea sitios web profesionales sin programar.</p><div class="price-row"><span class="usd">$9.75 <small>USDT</small></span><span class="cup">≈ 11.700 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Framer%20Pro%2012m%20NW%20%28%249.75%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="prod"><span class="cat" data-i18n="k_prod">Productividad</span><h3>Granola Business NW - opción 2</h3><p>Granola Business: asistente de notas con IA para reuniones, opción ampliada.</p><div class="price-row"><span class="usd">$9.75 <small>USDT</small></span><span class="cup">≈ 11.700 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Granola%20Business%20NW%20-%20opci%C3%B3n%202%20%28%249.75%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="ia"><span class="cat" data-i18n="k_ia">IA y chatbots</span><h3>Eleven Labs Creator Plan 3M</h3><p>Plan Creator de ElevenLabs por 3 meses: voces con IA para narraciones y videos.</p><div class="price-row"><span class="usd">$11.25 <small>USDT</small></span><span class="cup">≈ 13.500 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Eleven%20Labs%20Creator%20Plan%203M%20%28%2411.25%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="ia"><span class="cat" data-i18n="k_ia">IA y chatbots</span><h3>Chat GPT Plus 1M 20DW</h3><p>ChatGPT Plus por 1 mes: modelo avanzado, respuestas más rápidas y prioridad de acceso.</p><div class="price-row"><span class="usd">$12.29 <small>USDT</small></span><span class="cup">≈ 14.750 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Chat%20GPT%20Plus%201M%2020DW%20%28%2412.29%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="prod"><span class="cat" data-i18n="k_prod">Productividad</span><h3>Granola Business - 1 Year Offer</h3><p>Granola Business por 1 año: notas y resúmenes de reuniones con IA para tu equipo.</p><div class="price-row"><span class="usd">$15.00 <small>USDT</small></span><span class="cup">≈ 18.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Granola%20Business%20-%201%20Year%20Offer%20%28%2415.00%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="diseno"><span class="cat" data-i18n="k_diseno">Diseño y video</span><h3>Framer Pro - 1 Year FW</h3><p>Framer Pro por 1 año: sitios web rápidos y profesionales sin código.</p><div class="price-row"><span class="usd">$15.00 <small>USDT</small></span><span class="cup">≈ 18.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Framer%20Pro%20-%201%20Year%20FW%20%28%2415.00%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="diseno"><span class="cat" data-i18n="k_diseno">Diseño y video</span><h3>Supercut Team Plan 12M FW</h3><p>Supercut Team por 12 meses: edición de video con IA para equipos.</p><div class="price-row"><span class="usd">$15.00 <small>USDT</small></span><span class="cup">≈ 18.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Supercut%20Team%20Plan%2012M%20FW%20%28%2415.00%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="dev"><span class="cat" data-i18n="k_dev">Desarrollo y SEO</span><h3>Warp - Build Plan 12M FW</h3><p>Warp Build por 12 meses: terminal con IA para programar más rápido.</p><div class="price-row"><span class="usd">$15.00 <small>USDT</small></span><span class="cup">≈ 18.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Warp%20-%20Build%20Plan%2012M%20FW%20%28%2415.00%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="diseno"><span class="cat" data-i18n="k_diseno">Diseño y video</span><h3>Autodesk Admin Panel 3000 Invites 3 Yr</h3><p>Panel de administración Autodesk con 3.000 invitaciones por 3 años: herramientas de diseño e ingeniería.</p><div class="price-row"><span class="usd">$15.60 <small>USDT</small></span><span class="cup">≈ 18.700 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Autodesk%20Admin%20Panel%203000%20Invites%203%20Yr%20%28%2415.60%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="ia"><span class="cat" data-i18n="k_ia">IA y chatbots</span><h3>Pangram Pro 12m NW</h3><p>Pangram Pro por 12 meses: detecta texto generado por IA y mejora tu escritura.</p><div class="price-row"><span class="usd">$15.60 <small>USDT</small></span><span class="cup">≈ 18.700 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Pangram%20Pro%2012m%20NW%20%28%2415.60%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="diseno"><span class="cat" data-i18n="k_diseno">Diseño y video</span><h3>Heygen Creator 1 Month - Warranted</h3><p>HeyGen Creator por 1 mes, con garantía: videos con avatares de IA.</p><div class="price-row"><span class="usd">$18.00 <small>USDT</small></span><span class="cup">≈ 21.600 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Heygen%20Creator%201%20Month%20-%20Warranted%20%28%2418.00%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="diseno"><span class="cat" data-i18n="k_diseno">Diseño y video</span><h3>Magic Patterns Starter 12m NW</h3><p>Magic Patterns Starter por 12 meses: genera interfaces y diseños con IA.</p><div class="price-row"><span class="usd">$19.50 <small>USDT</small></span><span class="cup">≈ 23.400 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Magic%20Patterns%20Starter%2012m%20NW%20%28%2419.50%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="dev"><span class="cat" data-i18n="k_dev">Desarrollo y SEO</span><h3>PostHog - 1 Year Startup Offer</h3><p>PostHog por 1 año (oferta startup): analítica de producto para tu web o app.</p><div class="price-row"><span class="usd">$22.50 <small>USDT</small></span><span class="cup">≈ 27.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20PostHog%20-%201%20Year%20Startup%20Offer%20%28%2422.50%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="ia"><span class="cat" data-i18n="k_ia">IA y chatbots</span><h3>Pangram Pro 12m FW</h3><p>Pangram Pro por 12 meses: detector de IA y asistente de escritura profesional.</p><div class="price-row"><span class="usd">$22.50 <small>USDT</small></span><span class="cup">≈ 27.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Pangram%20Pro%2012m%20FW%20%28%2422.50%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="prod"><span class="cat" data-i18n="k_prod">Productividad</span><h3>Linear Business 12m NW - opción 1</h3><p>Linear Business por 12 meses: gestión de proyectos y tareas para equipos de software.</p><div class="price-row"><span class="usd">$22.50 <small>USDT</small></span><span class="cup">≈ 27.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Linear%20Business%2012m%20NW%20-%20opci%C3%B3n%201%20%28%2422.50%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="diseno"><span class="cat" data-i18n="k_diseno">Diseño y video</span><h3>Magic Patterns - Starter Plan Offer</h3><p>Magic Patterns Starter: diseño de interfaces con IA, plan de oferta.</p><div class="price-row"><span class="usd">$22.50 <small>USDT</small></span><span class="cup">≈ 27.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Magic%20Patterns%20-%20Starter%20Plan%20Offer%20%28%2422.50%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="ia"><span class="cat" data-i18n="k_ia">IA y chatbots</span><h3>Gumloop 12m FW</h3><p>Gumloop por 12 meses: automatiza tareas y flujos de trabajo con IA sin programar.</p><div class="price-row"><span class="usd">$22.50 <small>USDT</small></span><span class="cup">≈ 27.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Gumloop%2012m%20FW%20%28%2422.50%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="prod"><span class="cat" data-i18n="k_prod">Productividad</span><h3>Linear Business 12m NW - opción 2</h3><p>Linear Business por 12 meses: planificación y seguimiento de proyectos, opción ampliada.</p><div class="price-row"><span class="usd">$29.25 <small>USDT</small></span><span class="cup">≈ 35.100 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Linear%20Business%2012m%20NW%20-%20opci%C3%B3n%202%20%28%2429.25%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="dev"><span class="cat" data-i18n="k_dev">Desarrollo y SEO</span><h3>PostHog Scale 12m FW</h3><p>PostHog Scale por 12 meses: analítica avanzada de producto a gran escala.</p><div class="price-row"><span class="usd">$29.25 <small>USDT</small></span><span class="cup">≈ 35.100 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20PostHog%20Scale%2012m%20FW%20%28%2429.25%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="prod"><span class="cat" data-i18n="k_prod">Productividad</span><h3>Notion - 1 Year Premium FW</h3><p>Notion Premium por 1 año: notas, wikis y proyectos sin límites.</p><div class="price-row"><span class="usd">$30.00 <small>USDT</small></span><span class="cup">≈ 36.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Notion%20-%201%20Year%20Premium%20FW%20%28%2430.00%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="dev"><span class="cat" data-i18n="k_dev">Desarrollo y SEO</span><h3>Bolt.new Pro 12m NW</h3><p>Bolt.new Pro por 12 meses: crea aplicaciones web completas desde el navegador con IA.</p><div class="price-row"><span class="usd">$35.10 <small>USDT</small></span><span class="cup">≈ 42.100 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Bolt.new%20Pro%2012m%20NW%20%28%2435.10%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="dev"><span class="cat" data-i18n="k_dev">Desarrollo y SEO</span><h3>Jam - Team Plan Offer 12M FW</h3><p>Jam Team por 12 meses: reporta errores de tu web con capturas y grabaciones al instante.</p><div class="price-row"><span class="usd">$37.50 <small>USDT</small></span><span class="cup">≈ 45.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Jam%20-%20Team%20Plan%20Offer%2012M%20FW%20%28%2437.50%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="dev"><span class="cat" data-i18n="k_dev">Desarrollo y SEO</span><h3>Railway - Hobby Plan 12M FW</h3><p>Railway Hobby por 12 meses: despliega tus aplicaciones y servicios en la nube.</p><div class="price-row"><span class="usd">$37.50 <small>USDT</small></span><span class="cup">≈ 45.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Railway%20-%20Hobby%20Plan%2012M%20FW%20%28%2437.50%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="dev"><span class="cat" data-i18n="k_dev">Desarrollo y SEO</span><h3>Jam Team 10 Seat 12m FW</h3><p>Jam Team para 10 puestos por 12 meses: reporte de errores visual para equipos.</p><div class="price-row"><span class="usd">$39.00 <small>USDT</small></span><span class="cup">≈ 46.800 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Jam%20Team%2010%20Seat%2012m%20FW%20%28%2439.00%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="dev"><span class="cat" data-i18n="k_dev">Desarrollo y SEO</span><h3>RESEND PRO</h3><p>Resend Pro: envía correos transaccionales desde tus aplicaciones con entregabilidad profesional.</p><div class="price-row"><span class="usd">$44.98 <small>USDT</small></span><span class="cup">≈ 54.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20RESEND%20PRO%20%28%2444.98%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="ia"><span class="cat" data-i18n="k_ia">IA y chatbots</span><h3>Wispr Flow - 1 Year Pro FW</h3><p>Wispr Flow Pro por 1 año: dictado por voz con IA para escribir hablando en cualquier app.</p><div class="price-row"><span class="usd">$45.00 <small>USDT</small></span><span class="cup">≈ 54.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Wispr%20Flow%20-%201%20Year%20Pro%20FW%20%28%2445.00%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="otros"><span class="cat" data-i18n="k_otros">VPN, claves y más</span><h3>Waking Up - 1 Year Premium</h3><p>Waking Up Premium por 1 año: meditación y mindfulness guiados.</p><div class="price-row"><span class="usd">$45.00 <small>USDT</small></span><span class="cup">≈ 54.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Waking%20Up%20-%201%20Year%20Premium%20%28%2445.00%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="dev"><span class="cat" data-i18n="k_dev">Desarrollo y SEO</span><h3>Resend Pro 12m FW</h3><p>Resend Pro por 12 meses: correo transaccional para desarrolladores.</p><div class="price-row"><span class="usd">$48.75 <small>USDT</small></span><span class="cup">≈ 58.500 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Resend%20Pro%2012m%20FW%20%28%2448.75%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="ia"><span class="cat" data-i18n="k_ia">IA y chatbots</span><h3>Wispr Flow 12m FW</h3><p>Wispr Flow por 12 meses: convierte tu voz en texto pulido con IA.</p><div class="price-row"><span class="usd">$48.75 <small>USDT</small></span><span class="cup">≈ 58.500 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Wispr%20Flow%2012m%20FW%20%28%2448.75%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="prod"><span class="cat" data-i18n="k_prod">Productividad</span><h3>Readwise - 1 Year Premium FW</h3><p>Readwise Premium por 1 año: organiza y repasa tus lecturas, notas y destacados.</p><div class="price-row"><span class="usd">$52.50 <small>USDT</small></span><span class="cup">≈ 63.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Readwise%20-%201%20Year%20Premium%20FW%20%28%2452.50%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="diseno"><span class="cat" data-i18n="k_diseno">Diseño y video</span><h3>Gamma Pro 12m FW</h3><p>Gamma Pro por 12 meses: presentaciones, documentos y webs generados con IA.</p><div class="price-row"><span class="usd">$60.00 <small>USDT</small></span><span class="cup">≈ 72.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Gamma%20Pro%2012m%20FW%20%28%2460.00%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="dev"><span class="cat" data-i18n="k_dev">Desarrollo y SEO</span><h3>Replit Core 12m FW</h3><p>Replit Core por 12 meses: programa y despliega aplicaciones desde el navegador.</p><div class="price-row"><span class="usd">$60.00 <small>USDT</small></span><span class="cup">≈ 72.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Replit%20Core%2012m%20FW%20%28%2460.00%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="dev"><span class="cat" data-i18n="k_dev">Desarrollo y SEO</span><h3>Customer.io Essentials - 1 Year Offer</h3><p>Customer.io Essentials por 1 año: mensajes y campañas automáticas para tus clientes.</p><div class="price-row"><span class="usd">$60.05 <small>USDT</small></span><span class="cup">≈ 72.050 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20Customer.io%20Essentials%20-%201%20Year%20Offer%20%28%2460.05%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="streaming"><span class="cat" data-i18n="k_streaming">Streaming y música</span><h3>BRAIN.FM Premium 12M FW</h3><p>Brain.fm Premium por 12 meses: música con IA para concentrarte, relajarte y dormir.</p><div class="price-row"><span class="usd">$97.50 <small>USDT</small></span><span class="cup">≈ 117.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20BRAIN.FM%20Premium%2012M%20FW%20%28%2497.50%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+      <article class="card" data-cat="dev"><span class="cat" data-i18n="k_dev">Desarrollo y SEO</span><h3>INTERCOM FIN 12M FW</h3><p>Intercom Fin por 12 meses: agente de IA para la atención al cliente de tu negocio.</p><div class="price-row"><span class="usd">$112.48 <small>USDT</small></span><span class="cup">≈ 135.000 CUP</span></div><a class="order-link" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20pedir%3A%20INTERCOM%20FIN%2012M%20FW%20%28%24112.48%20USDT%29" target="_blank" rel="noopener">Pedir por WhatsApp →</a></article>
+    </div>
+  </section>
+
+  <section id="billetera">
+    <h2 data-i18n="wal_h2">Billetera Tu Despensa — muy pronto</h2>
+    <p class="sub" data-i18n="wal_sub">Estamos preparando la billetera de la tienda para los clientes frecuentes:</p>
+    <div class="wallet-soon">
+      <span class="soon-badge" data-i18n="wal_badge">En preparación</span>
+      <p data-i18n="wal_p">Depositas USDT una sola vez y tu saldo queda guardado en tu billetera de Tu Despensa. Después compras cualquier servicio pagando desde tu saldo, sin tener que hacer un depósito nuevo en cada pedido: pides por WhatsApp y el monto se descuenta de tu billetera al instante.</p>
+      <a class="btn primary" href="https://wa.me/5353933247?text=Hola%2C%20me%20interesa%20la%20billetera%20de%20Tu%20Despensa" target="_blank" rel="noopener" data-i18n="wal_cta">Avísame cuando abra — WhatsApp</a>
+    </div>
+  </section>
+
+  <section id="faq">
+    <h2 data-i18n="faq_h2">Preguntas frecuentes</h2>
+    <details><summary data-i18n="q1s">¿Esto vende recargas de Free Fire o Mobile Legends?</summary><p data-i18n="q1p">No. Esta tienda es solo de suscripciones y herramientas digitales. Las recargas de juegos se siguen pidiendo como siempre, por los grupos de WhatsApp.</p></details>
+    <details><summary data-i18n="q2s">¿Cuánto tarda la entrega de mi pedido?</summary><p data-i18n="q2p">En cuanto se confirma tu depósito, preparamos tu pedido y te lo entregamos por WhatsApp. La mayoría de los servicios se entregan el mismo día; si alguno necesita más tiempo, te lo decimos antes de que pagues.</p></details>
+    <details><summary data-i18n="q3s">¿Cómo pago desde Cuba?</summary><p data-i18n="q3p">Por depósito en USDT (red BEP20) a las direcciones de SafePal o Cwallet que están en la sección «Dos formas de comprar», o coordinando tu pedido por WhatsApp al +53 53933247.</p></details>
+    <details><summary data-i18n="q4s">¿Qué pasa si mi pedido no se entrega?</summary><p data-i18n="q4p">Si un servicio no se puede entregar, te devolvemos el 100% de tu depósito. Si el producto llega con algún problema, escríbenos por WhatsApp dentro de las primeras 24 horas con una captura y te lo resolvemos con un reemplazo o la devolución.</p></details>
+    <details><summary data-i18n="q5s">¿Puedo pedir directo por WhatsApp?</summary><p data-i18n="q5p">Sí, es la Opción 2 de esta página: escríbenos al <a href="https://wa.me/5353933247" target="_blank" rel="noopener">+53 53933247</a>, dinos qué servicio quieres y te confirmamos precio y entrega al momento.</p></details>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>Tu Despensa</h4>
+        <p style="margin:0" data-i18n="ft_about">Tienda de suscripciones y herramientas digitales. Pide y recibe tu producto por WhatsApp: <a href="https://wa.me/5353933247" target="_blank" rel="noopener">+53 53933247</a></p>
+      </div>
+      <div>
+        <h4 data-i18n="ft_h1">Cómo comprar</h4>
+        <ul>
+          <li><a href="#catalogo" data-i18n="ft_l_cat">Ver los servicios</a></li>
+          <li><a href="#comprar" data-i18n="ft_l_buy">Dónde depositar</a></li>
+          <li><a href="#billetera" data-i18n="ft_l_wallet">Billetera Tu Despensa</a></li>
+          <li><a href="https://wa.me/5353933247" target="_blank" rel="noopener">WhatsApp +53 53933247</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="ft_h2">Servicios</h4>
+        <ul>
+          <li>IA y chatbots</li>
+          <li>Diseño y video</li>
+          <li>Streaming y música</li>
+          <li>Productividad</li>
+          <li>Desarrollo y SEO</li>
+          <li>VPN, claves y más</li>
+        </ul>
+      </div>
+    </div>
+    <p class="src" data-i18n="ft_src">Precios en USDT y en CUP. Catálogo completo actualizado el 17 de noviembre de 2026.</p>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/5353933247?text=Hola%2C%20quiero%20hacer%20un%20pedido%20en%20Tu%20Despensa" target="_blank" rel="noopener" aria-label="WhatsApp +53 53933247">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+  <span data-i18n="wa_float">Pedir por WhatsApp</span>
+</a>
+
+<script>
+  // ===== Idioma ES/EN (estado solo en esta sesión) =====
+  var TITLES = {
+    es: 'Tu Despensa — Suscripciones digitales con entrega rápida',
+    en: 'Tu Despensa — Digital subscriptions with fast delivery'
+  };
+  var I18N_EN = {
+    sb_status: '<span class="dot"></span><b>Store open:</b> fast delivery as soon as your payment is confirmed',
+    sb_right: 'Orders on WhatsApp: +53 53933247',
+    hero_h1: 'Tu Despensa: digital subscriptions with <em>fast delivery</em>',
+    hero_lede: 'AI, design, streaming and music accounts and subscriptions and more, each with a clear description so you know what you’re buying before you pay. Order on WhatsApp, deposit in USDT and receive your product in the same chat.',
+    cta_catalog: 'View the catalog',
+    cta_buy: 'How to buy',
+    cta_tg: 'Order on WhatsApp',
+    wa_float: 'Order on WhatsApp',
+    fact1: '<b>64 products</b><span>Priced in USDT and CUP</span>',
+    fact2: '<b>USDT · BEP20</b><span>Deposit to SafePal or Cwallet</span>',
+    fact3: '<b>Fast delivery</b><span>As soon as your deposit is confirmed</span>',
+    fact4: '<b>Direct WhatsApp</b><span>Personal attention from the store</span>',
+    buy_h2: 'Two clear ways to buy',
+    buy_sub: 'Pick whichever suits you best: deposit USDT from your wallet, or order directly on WhatsApp. Either way, delivery kicks in as soon as the payment is confirmed.',
+    opt1_tag: 'Option 1 · Direct deposit',
+    opt1_h3: 'Deposit USDT on BEP20',
+    opt1_p: 'Send USDT over the BEP20 network (BNB Smart Chain) to one of these two store addresses:',
+    opt1_s1: 'Copy the address of the wallet you prefer.',
+    opt1_s2: 'Send the exact amount in USDT using the BEP20 network and save the transaction hash.',
+    opt1_s3: 'Send the receipt over <a href="https://wa.me/5353933247?text=Hola%2C%20acabo%20de%20depositar%20USDT%20por%20BEP20%2C%20te%20paso%20el%20comprobante" target="_blank" rel="noopener">WhatsApp</a> and you\u2019ll receive your product.',
+    opt1_warn: '<b>Careful:</b> send only USDT on the BEP20 network. A deposit sent on another network (TRC20, ERC20…) may never arrive and cannot be recovered.',
+    opt2_tag: 'Option 2 · WhatsApp',
+    opt2_h3: 'Order on WhatsApp',
+    opt2_p: 'The fastest way: message the store\u2019s WhatsApp directly, tell us which product you want and we\u2019ll confirm the price and availability right away.',
+    tg_b1: 'Open WhatsApp — +53 53933247',
+    opt2_s1: 'Tap the button and the chat with the store opens, with the message ready to send.',
+    opt2_s2: 'Say which product you want and we\u2019ll confirm the final price.',
+    opt2_s3: 'Pay by USDT deposit (BEP20) to SafePal or Cwallet and receive your product in the same chat.',
+    opt2_note: 'Personal attention from the store, no middlemen: you talk directly with Tu Despensa from start to finish.',
+    flow_h2: 'How your purchase works',
+    flow_sub: 'Four steps and done: pick the service, pay your deposit and receive your product on WhatsApp.',
+    st1_n: 'STEP 1', st2_n: 'STEP 2', st3_n: 'STEP 3', st4_n: 'STEP 4',
+    st1_h: 'Pick your service',
+    st1_p: 'Browse the catalog and read each service’s description so you know exactly what you’re buying.',
+    st2_h: 'Make your deposit',
+    st2_p: 'Deposit the amount in USDT over the BEP20 network to the SafePal or Cwallet address, or arrange the payment on WhatsApp.',
+    st3_h: 'Send the receipt',
+    st3_p: 'Send us the receipt on WhatsApp together with the name of the service you ordered.',
+    st4_h: 'Receive your product',
+    st4_p: 'We deliver your account or subscription in the same chat, with the access details ready to use.',
+    cat_h2: 'Updated services',
+    cat_sub: 'All 64 launch products, each with its description and its price in USDT and in CUP. Order on WhatsApp, we confirm stock on the spot and you deposit only once we confirm it.',
+    chip_all: 'All',
+    k_ia: 'AI & chatbots',
+    k_diseno: 'Design & video',
+    k_streaming: 'Streaming & music',
+    k_prod: 'Productivity',
+    k_dev: 'Development & SEO',
+    k_otros: 'VPN, keys & more',
+    price_note: 'Final price: <b>confirmed on WhatsApp when you order</b>',
+    c1_d: 'Google’s premium AI subscription: advanced Gemini for writing, summarizing, coding and working with your documents.',
+    c2_h: 'ChatGPT and AI accounts',
+    c2_d: 'ChatGPT, Claude and DeepSeek accounts and API credits for work and study.',
+    c3_d: 'AI tool for building apps and websites by describing what you want, without coding from scratch.',
+    c4_d: 'Video editor for mobile and PC: the paid version unlocks premium effects, templates and tools.',
+    c5_h: 'Canva and Adobe',
+    c5_d: 'Design tools: Canva, Adobe Express and the Adobe family for creators.',
+    c6_d: 'AI voice for narrations and videos (ElevenLabs) and website building without coding (Framer).',
+    c7_d: 'Spotify accounts to listen ad-free, download your playlists and skip tracks without limits.',
+    c8_d: 'Online languages and courses: learn at your own pace with Duolingo and Coursera courses.',
+    c9_h: 'Microsoft 365 and Notion',
+    c9_d: 'Office and organization: Microsoft 365 for documents and email, Notion for notes and projects, and Zoom accounts for meetings.',
+    c10_h: 'APIs for developers',
+    c10_d: 'API credits for Claude, Codex, ChatGPT and DeepSeek, plus SEO tools for developers and website creators.',
+    c11_h: 'VPN and Windows keys',
+    c11_d: 'VPN services for private browsing and Windows licenses to activate your PC.',
+    c12_h: 'Email accounts',
+    c12_d: 'Ready-to-use email accounts: Hotmail/Outlook and general email for your sign-ups and work.',
+    faq_h2: 'Frequently asked questions',
+    q1s: 'Does this sell Free Fire or Mobile Legends top-ups?',
+    q1p: 'No. This store is only for digital subscriptions and tools. Game top-ups are still ordered as always, through the WhatsApp groups.',
+    q2s: 'How long does delivery take?',
+    q2p: 'As soon as your deposit is confirmed, we prepare your order and deliver it on WhatsApp. Most services are delivered the same day; if one needs more time, we’ll tell you before you pay.',
+    q3s: 'How do I pay from Cuba?',
+    q3p: 'By USDT deposit (BEP20 network) to the SafePal or Cwallet addresses in the “Two clear ways to buy” section, or by arranging your order on WhatsApp at +53 53933247.',
+    q4s: 'What happens if my order isn’t delivered?',
+    q4p: 'If a service can’t be delivered, we refund 100% of your deposit. If the product arrives with a problem, message us on WhatsApp within the first 24 hours with a screenshot and we’ll sort it out with a replacement or a refund.',
+    q5s: 'Can I order directly on WhatsApp?',
+    q5p: 'Yes, that’s Option 2 on this page: message us at <a href="https://wa.me/5353933247" target="_blank" rel="noopener">+53 53933247</a>, tell us which service you want and we’ll confirm the price and delivery right away.',
+    ft_about: 'Digital subscriptions and tools store. Order and receive your product on WhatsApp: <a href="https://wa.me/5353933247" target="_blank" rel="noopener">+53 53933247</a>',
+    ft_h1: 'How to buy',
+    ft_h2: 'Services',
+    wal_h2: 'Tu Despensa wallet — coming soon',
+    wal_sub: 'We’re preparing the store wallet for frequent customers:',
+    wal_badge: 'In preparation',
+    wal_p: 'You deposit USDT once and your balance stays saved in your Tu Despensa wallet. After that you buy any service paying from your balance, with no new deposit on every order: you order on WhatsApp and the amount is deducted from your wallet instantly.',
+    wal_cta: 'Let me know when it opens — WhatsApp',
+    ft_l_cat: 'View the services',
+    ft_l_buy: 'Where to deposit',
+    ft_l_wallet: 'Tu Despensa wallet',
+    ft_src: 'Prices in USDT and CUP. Full catalog updated on November 17, 2026.',
+  };
+  var COPY_TXT = {
+    es: { label: 'Copiar dirección', done: '¡Copiada!' },
+    en: { label: 'Copy address', done: 'Copied!' }
+  };
+  var currentLang = 'es';
+  var esText = {};
+  var i18nEls = document.querySelectorAll('[data-i18n]');
+  i18nEls.forEach(function(el){
+    var k = el.getAttribute('data-i18n');
+    if (!(k in esText)) esText[k] = el.innerHTML;
+  });
+
+
+  // Botones de copiar dirección
+  var copyBtns = document.querySelectorAll('.copy-btn');
+  function resetCopy(){ copyBtns.forEach(function(b){ b.textContent = COPY_TXT[currentLang].label; }); }
+  copyBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var addr = btn.getAttribute('data-addr');
+      function done(){ btn.textContent = COPY_TXT[currentLang].done; setTimeout(resetCopy, 1600); }
+      function fallback(){
+        var ta = document.createElement('textarea');
+        ta.value = addr; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch(e){}
+        document.body.removeChild(ta); done();
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(addr).then(done, fallback);
+      } else { fallback(); }
+    });
+  });
+
+  // Cambio de idioma
+  function setLang(lang){
+    currentLang = lang;
+    i18nEls.forEach(function(el){
+      var k = el.getAttribute('data-i18n');
+      if (lang === 'en' && I18N_EN[k] !== undefined){ el.innerHTML = I18N_EN[k]; }
+      else if (esText[k] !== undefined){ el.innerHTML = esText[k]; }
+    });
+    document.documentElement.lang = lang;
+    document.title = TITLES[lang];
+    document.getElementById('langEs').setAttribute('aria-pressed', lang === 'es' ? 'true' : 'false');
+    document.getElementById('langEn').setAttribute('aria-pressed', lang === 'en' ? 'true' : 'false');
+    resetCopy();
+  }
+  document.getElementById('langEs').addEventListener('click', function(){ setLang('es'); });
+  document.getElementById('langEn').addEventListener('click', function(){ setLang('en'); });
+
+  // Filtro de categorías del catálogo (estado solo en esta sesión)
+  var chips = document.querySelectorAll('.chip');
+  var cards = document.querySelectorAll('#catalogGrid .card');
+  chips.forEach(function(chip){
+    chip.addEventListener('click', function(){
+      chips.forEach(function(c){ c.setAttribute('aria-pressed','false'); });
+      chip.setAttribute('aria-pressed','true');
+      var f = chip.getAttribute('data-filter');
+      cards.forEach(function(card){
+        if(f === 'all' || card.getAttribute('data-cat') === f){ card.classList.remove('hidden'); }
+        else { card.classList.add('hidden'); }
+      });
+    });
+  });
+
+</script>
+</body>
+</html>
