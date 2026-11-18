@@ -111,6 +111,8 @@
   .order-link:hover{text-decoration:underline}
   .order-links{display:flex;gap:16px;flex-wrap:wrap}
   .order-link.tg{color:#229ED9}
+  .addr.masked{letter-spacing:.08em}
+  .wallet .reveal-btn{margin-top:8px}
   .hidden{display:none!important}
   /* providers table */
   .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
@@ -229,13 +231,15 @@
         <p data-i18n="opt1_p">Envía USDT por la red BEP20 (BNB Smart Chain) a una de estas dos direcciones de la tienda:</p>
         <div class="wallet">
           <div class="wname"><span>SafePal</span><span class="net-badge">USDT · BEP20</span></div>
-          <div class="addr">0x72Ee72708403F5848d2b39Fe0849ea04aFfF6Fb2</div>
-          <button type="button" class="btn ghost small copy-btn" data-addr="0x72Ee72708403F5848d2b39Fe0849ea04aFfF6Fb2">Copiar dirección</button>
+          <div class="addr masked" data-addr="0x72Ee72708403F5848d2b39Fe0849ea04aFfF6Fb2">0x72Ee…6Fb2</div>
+          <button type="button" class="btn ghost small reveal-btn" data-addr="0x72Ee72708403F5848d2b39Fe0849ea04aFfF6Fb2">Ver dirección</button>
+          <button type="button" class="btn ghost small copy-btn" data-addr="0x72Ee72708403F5848d2b39Fe0849ea04aFfF6Fb2" hidden>Copiar dirección</button>
         </div>
         <div class="wallet">
           <div class="wname"><span>Cwallet</span><span class="net-badge">USDT · BEP20</span></div>
-          <div class="addr">0x1Aa0C54695980a0AaE0A53677d34f71261fa38a3</div>
-          <button type="button" class="btn ghost small copy-btn" data-addr="0x1Aa0C54695980a0AaE0A53677d34f71261fa38a3">Copiar dirección</button>
+          <div class="addr masked" data-addr="0x1Aa0C54695980a0AaE0A53677d34f71261fa38a3">0x1Aa0…38a3</div>
+          <button type="button" class="btn ghost small reveal-btn" data-addr="0x1Aa0C54695980a0AaE0A53677d34f71261fa38a3">Ver dirección</button>
+          <button type="button" class="btn ghost small copy-btn" data-addr="0x1Aa0C54695980a0AaE0A53677d34f71261fa38a3" hidden>Copiar dirección</button>
         </div>
         <ol class="osteps">
           <li data-i18n="opt1_s1">Copia la dirección de la billetera que prefieras.</li>
@@ -521,9 +525,27 @@
   });
 
 
+  // Mostrar la dirección solo cuando el cliente la toca (no queda expuesta en la página)
+  var REVEAL_TXT = {
+    es: { label: 'Ver dirección' },
+    en: { label: 'Show address' }
+  };
+  var revealBtns = document.querySelectorAll('.reveal-btn');
+  revealBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var wallet = btn.closest('.wallet');
+      var addrEl = wallet ? wallet.querySelector('.addr') : null;
+      var copyBtn = wallet ? wallet.querySelector('.copy-btn') : null;
+      var addr = btn.getAttribute('data-addr');
+      if (addrEl && addr){ addrEl.textContent = addr; addrEl.classList.remove('masked'); }
+      if (copyBtn){ copyBtn.hidden = false; }
+      btn.hidden = true;
+    });
+  });
+
   // Botones de copiar dirección
   var copyBtns = document.querySelectorAll('.copy-btn');
-  function resetCopy(){ copyBtns.forEach(function(b){ b.textContent = COPY_TXT[currentLang].label; }); }
+  function resetCopy(){ copyBtns.forEach(function(b){ b.textContent = COPY_TXT[currentLang].label; }); revealBtns.forEach(function(b){ if (!b.hidden){ b.textContent = REVEAL_TXT[currentLang].label; } }); }
   copyBtns.forEach(function(btn){
     btn.addEventListener('click', function(){
       var addr = btn.getAttribute('data-addr');
