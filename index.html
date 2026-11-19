@@ -6,10 +6,16 @@
 <meta name="color-scheme" content="light dark" />
 <link rel="icon" href="data:," />
 <title>Tu Despensa — Suscripciones digitales con entrega rápida</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Archivo+Expanded:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; form-action 'none'; object-src 'none'; base-uri 'self'">
 <style>
+  /* Fuentes autoalojadas en fonts/ (sin Google Fonts) */
+  @font-face{font-family:'Archivo';font-style:normal;font-weight:500;font-stretch:100%;font-display:swap;src:url(fonts/archivo-500.woff2) format('woff2');}
+  @font-face{font-family:'Archivo';font-style:normal;font-weight:600;font-stretch:100%;font-display:swap;src:url(fonts/archivo-600.woff2) format('woff2');}
+  @font-face{font-family:'Archivo';font-style:normal;font-weight:700;font-stretch:100%;font-display:swap;src:url(fonts/archivo-700.woff2) format('woff2');}
+  @font-face{font-family:'Archivo';font-style:normal;font-weight:800;font-stretch:100%;font-display:swap;src:url(fonts/archivo-800.woff2) format('woff2');}
+  @font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-stretch:100%;font-display:swap;src:url(fonts/ibm-plex-mono-400.woff2) format('woff2');}
+  @font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-stretch:100%;font-display:swap;src:url(fonts/ibm-plex-mono-500.woff2) format('woff2');}
+  @font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:600;font-stretch:100%;font-display:swap;src:url(fonts/ibm-plex-mono-600.woff2) format('woff2');}
   :root{
     --bg:#f4f6f3; --surface:#ffffff; --surface2:#eaf0ea; --ink:#14231a; --muted:#5a6b5f;
     --line:#d7e0d7; --brand:#0e6b3a; --brand-ink:#ffffff; --accent:#e8a020; --accent-ink:#231a00;
@@ -76,6 +82,8 @@
   .osteps{margin:0;padding-left:20px;color:var(--muted);font-size:.94rem;display:grid;gap:5px}
   .osteps a{font-weight:600}
   .opt-warn{font-size:.88rem!important;background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink)!important;border-radius:10px;padding:11px 13px}
+  .official-warn{background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink);border-radius:var(--radius);padding:13px 16px;margin:16px 0;font-size:.95rem}
+  .official-warn b{font-weight:800}
   .bot-own{border:1.5px dashed var(--brand);border-radius:10px;padding:14px 16px;background:var(--surface2);display:grid;gap:8px}
   .bot-own h4{margin:0;font-size:1rem}
   .bot-own p{font-size:.9rem}
@@ -200,6 +208,8 @@
   </div>
 </div>
 
+<div class="wrap"><p class="official-warn" data-i18n="official_warn"><b>Único número oficial: +53 53933247.</b> Confirma siempre la dirección de depósito por WhatsApp antes de enviar.</p></div>
+
 <header class="hero">
   <div class="wrap">
     <h1 data-i18n="hero_h1">Tu Despensa: suscripciones digitales con <em>entrega rápida</em></h1>
@@ -224,6 +234,7 @@
   <section id="comprar">
     <h2 data-i18n="buy_h2">Dos formas de comprar, claras</h2>
     <p class="sub" data-i18n="buy_sub">Elige la que te quede mejor: depositas USDT desde tu billetera o pides directo por WhatsApp. En los dos casos la entrega se activa en cuanto se confirma el pago.</p>
+    <p class="official-warn" data-i18n="official_warn"><b>Único número oficial: +53 53933247.</b> Confirma siempre la dirección de depósito por WhatsApp antes de enviar.</p>
     <div class="buy-grid">
       <div class="option main">
         <span class="opt-tag" data-i18n="opt1_tag">Opción 1 · Depósito directo</span>
@@ -434,6 +445,7 @@
     fact4: '<b>Direct WhatsApp</b><span>Personal attention from the store</span>',
     buy_h2: 'Two clear ways to buy',
     buy_sub: 'Pick whichever suits you best: deposit USDT from your wallet, or order directly on WhatsApp. Either way, delivery kicks in as soon as the payment is confirmed.',
+    official_warn: 'Only official number: <b>+53 53933247</b>. Always confirm the deposit address on WhatsApp before sending.',
     opt1_tag: 'Option 1 · Direct deposit',
     opt1_h3: 'Deposit USDT on BEP20',
     opt1_p: 'Send USDT over the BEP20 network (BNB Smart Chain) to one of these two store addresses:',
@@ -525,7 +537,7 @@
   });
 
 
-  // Mostrar la dirección solo cuando el cliente la toca (no queda expuesta en la página)
+  // La dirección completa SÍ está en el código de la página (atributos data-addr): el botón solo la oculta de la vista hasta que el cliente la toca. No protege contra quien lea el código fuente.
   var REVEAL_TXT = {
     es: { label: 'Ver dirección' },
     en: { label: 'Show address' }
